@@ -116,8 +116,8 @@ public class EmptyFolderDeleterApp extends Application implements EventHandler<j
 	private void deleteRecursively(File folder) {
 		try {
 			if(folder.length() == 0 && folder.isDirectory()) {
-				folder.delete();
-				writeDeletedLog(folder.getAbsolutePath());
+				if(folder.delete())
+					writeDeletedLog(folder.getAbsolutePath());
 			}
 			else{
 				File[] files = folder.listFiles();
@@ -125,9 +125,9 @@ public class EmptyFolderDeleterApp extends Application implements EventHandler<j
 					if(currentFile.isDirectory())
 						deleteRecursively(currentFile);
 				}
-				if(folder.length() == 0  && folder.isDirectory()) {
-					folder.delete();
-					writeDeletedLog(folder.getAbsolutePath());
+				if(folder.length() == 0 && folder.isDirectory()) {
+					if(folder.delete())
+						writeDeletedLog(folder.getAbsolutePath());
 				}
 			}
 		} catch (Exception ex) {
@@ -147,7 +147,6 @@ public class EmptyFolderDeleterApp extends Application implements EventHandler<j
 			fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 			
 			if(fc.showOpenDialog(open) == JFileChooser.APPROVE_OPTION) {
-				System.out.println(fc.getSelectedFile().getAbsolutePath());
 				return fc.getSelectedFile().getAbsolutePath();
 			}
 			else {
